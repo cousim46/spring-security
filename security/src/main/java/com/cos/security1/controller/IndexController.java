@@ -13,35 +13,38 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequiredArgsConstructor
-
 public class IndexController {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    @GetMapping({"","/"})
+    @GetMapping({"", "/"})
     public String index() {
         return "index";
     }
 
     @GetMapping("/user")
-    public @ResponseBody String user() {
+    public @ResponseBody
+    String user() {
         return "user";
     }
+
     @GetMapping("/admin")
-    public @ResponseBody String admin() {
+    public @ResponseBody
+    String admin() {
         return "admin";
     }
+
     @GetMapping("/manager")
-    public @ResponseBody String manager() {
+    public @ResponseBody
+    String manager() {
         return "manager";
     }
 
-    @GetMapping("/loginForm")
-    public String loginForm() {
-        return "loginForm";
+    @GetMapping("/login")
+    public @ResponseBody String loginForm() {
+        return "login";
     }
-
 
 
     @GetMapping("/joinForm")
@@ -50,7 +53,7 @@ public class IndexController {
     }
 
     @PostMapping("/join")
-    public  String join(User user) {
+    public String join(User user) {
         user.setRole("ROLE_USER");
         String rawPassword = user.getPassword();
         System.out.println("rawPassword = " + rawPassword);
@@ -67,15 +70,12 @@ public class IndexController {
     public @ResponseBody String info() {
         return "개인정보";
     }
+
     @PreAuthorize("hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
     @GetMapping("/data")
     public @ResponseBody String data() {
         return "데이터정보";
     }
-
-
-
-
 
 
 }
