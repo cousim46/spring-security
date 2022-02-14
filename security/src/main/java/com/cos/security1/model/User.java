@@ -19,6 +19,9 @@ public class User {
     private String email; // 사용자 이메일
     private String role; // 사용자 권한
 
+    private String provider;
+    private String providerId;
+
     @CreationTimestamp
     private Timestamp createDate; // 회원가입한 날짜
 }
