@@ -1,11 +1,14 @@
 package com.cos.security1.config.auth;
 
 import com.cos.security1.model.User;
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
 
 //시큐리티가 /login 주소 요청이 오면 낚아채서 로그인 진행
 // 로그인 진행이 완료가 되면 session에 만들어 줌 session을 만들어주는데
@@ -15,12 +18,33 @@ import java.util.Collection;
 // User오브젝트 타입은 UserDetails 타입 객체
 // 시큐리티 세션 영역(Security Session)에 들어갈 수 있는 객체는
 // Authentication 이고 Authentication객체에 User정보를 저장할때의 객체는 UserDetails객체이다.
-public class PrincipalDetails implements UserDetails {
+@Getter
+public class PrincipalDetails implements UserDetails, OAuth2User {
 
     private User user; // 콤포지션
+    private Map<String, Object> attributes;
 
+
+    // 일반 로그인
     public PrincipalDetails(User user) {
         this.user = user;
+    }
+    // OAuth 로그인인
+   public PrincipalDetails(User user, Map<String, Object> attributes) {
+        this.user = user;
+        this.attributes = attributes;
+    }
+
+
+    @Override
+    public String getName() {
+        return null;
+    }
+
+
+    @Override
+    public Map<String, Object> getAttributes() {
+        return attributes;
     }
 
     // 해당 user의 권한을 리턴하는 곳
@@ -72,3 +96,5 @@ public class PrincipalDetails implements UserDetails {
         return true;
     }
 }
+
+
