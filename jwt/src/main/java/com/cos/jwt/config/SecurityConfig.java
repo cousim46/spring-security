@@ -1,5 +1,6 @@
 package com.cos.jwt.config;
 
+import com.cos.jwt.config.jwt.JwtAuthenticationFilter;
 import com.cos.jwt.filter.MyFilter1;
 import com.cos.jwt.filter.MyFilter3;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilter(corsFilter) // @CrossOrigin는 인증이 없을때 인증이 있을대는 filter에 등록
                 .formLogin().disable() // form 로그인 사용 x
                 .httpBasic().disable()
+                .addFilter(new JwtAuthenticationFilter(authenticationManager())) // 파라미터 명 AuthenticationManager를 던져줘야됨
                 .authorizeRequests()
                 .antMatchers("api/v1/user/**")
                 .access("hasRole('ROLE_USER') or hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
